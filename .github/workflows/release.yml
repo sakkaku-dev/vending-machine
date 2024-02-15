@@ -19,7 +19,7 @@ jobs:
       matrix:
         channel: [win, linux, web, macOS]
     env:
-      GAME: ##VAR_GAME_NAME
+      GAME: vending-machine
       CHANNEL: ${{matrix.channel}}
       GODOT_VERSION: 4.1
       GAME_VERSION: ${{ github.event.inputs.message || GITHUB_REF_NAME }} # TODO: check if this works

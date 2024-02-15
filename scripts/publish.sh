@@ -5,7 +5,7 @@
 # butler: for itchio
 # steamcmd: for steam
 
-GAME="##VAR_GAME_NAME"
+GAME="vending-machine"
 VERSION="$1"
 PLATFORM="$2"
 USER="$3"
