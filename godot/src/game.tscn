@@ -1,3 +1,15 @@
-[gd_scene format=3 uid="uid://di8g8e6s34cik"]
+[gd_scene load_steps=3 format=3 uid="uid://di8g8e6s34cik"]
+
+[ext_resource type="Texture2D" uid="uid://bwve2nq30wldn" path="res://icon.svg" id="1_etyco"]
+[ext_resource type="Script" path="res://src/game.gd" id="1_xx2in"]
 
 [node name="Game" type="Node2D"]
+script = ExtResource("1_xx2in")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="VendingMachine" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="VendingMachine"]
+scale = Vector2(3.1875, 4.25)
+texture = ExtResource("1_etyco")

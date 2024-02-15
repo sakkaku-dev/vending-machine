@@ -1,9 +1,10 @@
 extends Node
 
 var log_level := Logger.Level.DEBUG
-var version := "dev" : set = _set_version
+var version := "dev"
 var _logger := Logger.new("Env")
 var _demo := false
+var _enable_steam := false
 
 func _ready():
 	if is_prod():
