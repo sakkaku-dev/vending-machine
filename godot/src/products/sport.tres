@@ -1,10 +1,13 @@
-[gd_resource type="Resource" script_class="ProductResource" load_steps=3 format=3 uid="uid://rj7eb05wmwpp"]
+[gd_resource type="Resource" script_class="ProductResource" load_steps=4 format=3 uid="uid://rj7eb05wmwpp"]
 
 [ext_resource type="Texture2D" uid="uid://7l7j8ucw03xv" path="res://assets/Icon_Sport.png" id="1_e38ji"]
 [ext_resource type="Script" path="res://src/products/ProductResource.gd" id="1_l1xmc"]
+[ext_resource type="PackedScene" uid="uid://8ejmxgtmhi73" path="res://src/products/sport.tscn" id="2_pwv7s"]
 
 [resource]
 script = ExtResource("1_l1xmc")
 type = 1
 base_price = 5
+unlock_price = 100
 icon = ExtResource("1_e38ji")
+scene = ExtResource("2_pwv7s")

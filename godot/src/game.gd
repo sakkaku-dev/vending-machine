@@ -3,7 +3,6 @@ extends Node2D
 @export var available_list: Control
 @onready var sell_timer = $SellTimer
 
-var _logger = Logger.new("Game")
 var selecting_product
 
 func _ready():
@@ -13,7 +12,6 @@ func _ready():
 		if slots.size() > 0:
 			var slot = slots.pick_random()
 			GameManager.sold_in_slot(slot)
-			_logger.debug("Sold product in slot %s" % slot)
 	)
 
 func _on_product_list_edit_for(product: ProductResource):

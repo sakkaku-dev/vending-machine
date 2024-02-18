@@ -16,6 +16,10 @@ func _ready():
 		if slot_marker.slot_coord == slot:
 			_update_stock_color()
 	)
+	GameManager.slot_changed.connect(func(slot, _x):
+		if slot_marker.slot_coord == slot:
+			_update_stock_color()
+	)
 
 func _update_stock_color():
 	var p = GameManager.get_slot_amount(slot_marker.slot_coord) / float(GameManager.items_per_slot)

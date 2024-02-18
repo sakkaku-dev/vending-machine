@@ -41,7 +41,7 @@ func _reset_slot(slot: Vector2):
 	if current_amount > 0:
 		var prev_product = slot_product[slot]
 		if prev_product:
-			stock[prev_product.type] += current_amount
+			_add_to_stock(prev_product.type, current_amount)
 		
 		slot_amount[slot] -= current_amount
 		if slot_amount[slot] != 0:
@@ -58,16 +58,22 @@ func fill_slot(slot: Vector2):
 		_logger.info("Slot %s has no product assigned" % slot)
 		return
 	
-	if stock[product.type] <= 0:
+	if get_stock_for(product.type) <= 0:
 		_logger.info("Slot %s product %s is out of stock" % [slot, ProductResource.Type.keys()[product.type]])
 		return
 
 	var current_amount = slot_amount[slot]
 	var fill_amount = items_per_slot - current_amount
 	
-	stock[product.type] -= fill_amount
+	_add_to_stock(product.type, -fill_amount)
 	slot_amount[slot] += fill_amount
 	GameManager.slot_filled.emit(slot, fill_amount)
+
+func _add_to_stock(type: ProductResource.Type, amount: int):
+	if not type in stock:
+		stock[type] = 0
+	
+	stock[type] += amount
 
 func set_product_for_slot(slot: Vector2, product: ProductResource):
 	_reset_slot(slot)

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://8ejmxgtmhi73"]
+
+[ext_resource type="Script" path="res://src/products/soda.gd" id="1_2i8ea"]
+[ext_resource type="Texture2D" uid="uid://4ixxso0stfa0" path="res://assets/Sport.png" id="1_v8j4y"]
+
+[node name="Sport" type="Node2D"]
+script = ExtResource("1_2i8ea")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -13)
+texture = ExtResource("1_v8j4y")

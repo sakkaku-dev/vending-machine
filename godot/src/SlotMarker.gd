@@ -27,7 +27,8 @@ func _ready():
 			current_product = product
 			
 			_remove_all()
-			latest_node = _add_scene()
+			if GameManager.get_slot_amount(slot_coord) > 0:
+				latest_node = _add_scene()
 	)
 	GameManager.slot_filled.connect(func(slot, amount):
 		if slot == slot_coord:
