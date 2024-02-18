@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://blm07cdcd6yq8"]
+
+[ext_resource type="Texture2D" uid="uid://vyu3424ve68x" path="res://assets/Soda.png" id="1_o0fl0"]
+
+[node name="Soda" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -7)
+texture = ExtResource("1_o0fl0")

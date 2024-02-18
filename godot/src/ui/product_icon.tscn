@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://cckiu05lb7rjc"]
+
+[ext_resource type="Script" path="res://src/ui/product_icon.gd" id="1_h0w6d"]
+[ext_resource type="Texture2D" uid="uid://co2utna3r8sgg" path="res://assets/Icon_Soda.png" id="2_m3h6r"]
+
+[node name="ProductIcon" type="TextureButton"]
+custom_minimum_size = Vector2(16, 16)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_h0w6d")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_m3h6r")
+expand_mode = 3
+stretch_mode = 5

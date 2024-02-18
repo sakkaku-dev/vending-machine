@@ -1,15 +1,78 @@
-[gd_scene load_steps=3 format=3 uid="uid://di8g8e6s34cik"]
+[gd_scene load_steps=8 format=3 uid="uid://di8g8e6s34cik"]
 
-[ext_resource type="Texture2D" uid="uid://bwve2nq30wldn" path="res://icon.svg" id="1_etyco"]
 [ext_resource type="Script" path="res://src/game.gd" id="1_xx2in"]
+[ext_resource type="Texture2D" uid="uid://cqby0stwix52q" path="res://assets/Machine_Single.png" id="2_enoih"]
+[ext_resource type="Texture2D" uid="uid://b0spngh76s3i4" path="res://assets/Table.png" id="2_mhxbb"]
+[ext_resource type="Script" path="res://src/VendingMachine.gd" id="2_omhow"]
+[ext_resource type="Script" path="res://src/SlotMarker.gd" id="5_md0ey"]
+[ext_resource type="Script" path="res://src/ui/ProductList.gd" id="6_kgm72"]
+[ext_resource type="PackedScene" uid="uid://cckiu05lb7rjc" path="res://src/ui/product_icon.tscn" id="7_7q0nn"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_xx2in")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(2, 2)
 
-[node name="VendingMachine" type="Node2D" parent="."]
+[node name="SingleSlotMachine" type="Node2D" parent="." node_paths=PackedStringArray("first_slot")]
+script = ExtResource("2_omhow")
+first_slot = NodePath("Sprite2D/SlotMarker")
 
-[node name="Sprite2D" type="Sprite2D" parent="VendingMachine"]
-scale = Vector2(3.1875, 4.25)
-texture = ExtResource("1_etyco")
+[node name="Sprite2D2" type="Sprite2D" parent="SingleSlotMachine"]
+position = Vector2(0, 34)
+texture = ExtResource("2_mhxbb")
+
+[node name="Sprite2D" type="Sprite2D" parent="SingleSlotMachine"]
+texture = ExtResource("2_enoih")
+
+[node name="SlotMarker" type="Marker2D" parent="SingleSlotMachine/Sprite2D"]
+position = Vector2(-9.5, 7)
+script = ExtResource("5_md0ey")
+
+[node name="ColorRect" type="ColorRect" parent="SingleSlotMachine/Sprite2D/SlotMarker"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -20.0
+offset_right = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.486275)
+
+[node name="ColorRect" type="ColorRect" parent="SingleSlotMachine/Sprite2D"]
+offset_left = -26.0
+offset_top = -26.0
+offset_right = 7.0
+offset_bottom = 9.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0.266667)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="ProductList" type="GridContainer" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+script = ExtResource("6_kgm72")
+item_scene = ExtResource("7_7q0nn")
+
+[connection signal="edit_for" from="CanvasLayer/Control/MarginContainer/ProductList" to="." method="_on_product_list_edit_for"]
