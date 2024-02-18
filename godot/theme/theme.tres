@@ -1,0 +1,31 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://cbnnyf42jt1ru"]
+
+[ext_resource type="FontFile" uid="uid://dyc11uh7lup37" path="res://theme/jackeyfont.ttf" id="1_otrid"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e6mbf"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rm84a"]
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oj2fq"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jrfer"]
+bg_color = Color(0, 0, 0, 0)
+
+[resource]
+default_font = ExtResource("1_otrid")
+default_font_size = 8
+Button/colors/font_color = Color(0.9, 0.75, 1, 0.7)
+Button/colors/font_color_focus = Color(1, 1, 1, 1)
+Button/colors/font_color_hover = Color(1, 1, 1, 1)
+Button/colors/font_color_pressed = Color(1, 1, 1, 1)
+Button/styles/focus = SubResource("StyleBoxFlat_e6mbf")
+Button/styles/hover = SubResource("StyleBoxFlat_rm84a")
+Button/styles/normal = SubResource("StyleBoxFlat_oj2fq")
+Button/styles/pressed = SubResource("StyleBoxFlat_jrfer")

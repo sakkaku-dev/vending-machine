@@ -1,24 +1,26 @@
 extends TextureButton
 
-#signal edit_for(product)
-
 @onready var texture_rect = $TextureRect
+@onready var color_rect = $ColorRect
+@onready var label = $Label
 
-var tw: Tween
-#var product: ProductResource
+var product: ProductResource
 
 func _ready():
-	pass
-	#mouse_entered.connect(func(): _move(Vector2.LEFT * 3))
-	#mouse_exited.connect(func(): _move(Vector2.ZERO))
-	#pressed.connect(func(): edit_for.emit(product.type))
+	_update()
+	GameManager.slot_changed.connect(func(_s, _p): _update())
+	GameManager.slot_filled.connect(func(_s, _a): _update())
 
-func _move(delta: Vector2):
-	if tw and tw.is_running():
-		tw.kill()
-	
-	tw = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
-	tw.tween_property(texture_rect, "position", delta, 0.5)
+func _update():
+	if product and GameManager.is_unlocked(product):
+		var stock = GameManager.get_stock_for(product.type)
+		label.text = "%s" % stock
+		label.show()
+	else:
+		label.hide()
 
-func set_icon(icon: Texture2D):
-	texture_rect.texture = icon
+func set_product(p: ProductResource):
+	product = p
+	texture_rect.texture = p.icon
+	color_rect.visible = not GameManager.is_unlocked(product)
+	_update()

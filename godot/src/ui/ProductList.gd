@@ -15,4 +15,4 @@ func _update():
 		var item = item_scene.instantiate() as TextureButton
 		add_child(item)
 		item.pressed.connect(func(): edit_for.emit(p))
-		item.set_icon(p.icon)
+		item.set_product(p)

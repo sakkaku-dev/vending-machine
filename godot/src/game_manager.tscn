@@ -4,3 +4,7 @@
 
 [node name="GameManager" type="Node"]
 script = ExtResource("1_ojqlv")
+
+[node name="SellTimer" type="Timer" parent="."]
+wait_time = 5.0
+autostart = true
