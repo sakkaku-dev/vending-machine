@@ -40,6 +40,8 @@ func _ready():
 	GameManager.slot_filled.connect(func(slot, amount):
 		if slot == slot_coord:
 			_update_stock_color()
+			if latest_node == null:
+				latest_node = _add_scene()
 	)
 	GameManager.slot_sold.connect(func(slot, earned):
 		if slot == slot_coord:
@@ -48,6 +50,8 @@ func _ready():
 			latest_node.drop(drop_position.global_position.y)
 			if GameManager.get_slot_amount(slot_coord) > 0:
 				latest_node = _add_scene()
+			else:
+				latest_node = null
 	)
 	
 	color_rect.hide()

@@ -73,8 +73,9 @@ func set_product_for_slot(slot: Vector2, product: ProductResource):
 	_reset_slot(slot)
 	slot_product[slot] = product
 	slot_amount[slot] = 0
-	fill_slot(slot)
 	GameManager.slot_changed.emit(slot, product)
+	
+	fill_slot(slot)
 
 func sold_in_slot(slot: Vector2):
 	var product = slot_product[slot]
