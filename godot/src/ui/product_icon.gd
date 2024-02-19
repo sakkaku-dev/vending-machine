@@ -10,6 +10,7 @@ func _ready():
 	_update()
 	GameManager.slot_changed.connect(func(_s, _p): _update())
 	GameManager.slot_filled.connect(func(_s, _a): _update())
+	GameManager.product_bought.connect(func(_p): _update())
 
 func _update():
 	if product and GameManager.is_unlocked(product):

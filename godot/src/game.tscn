@@ -117,10 +117,15 @@ anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="ProductList" type="GridContainer" parent="CanvasLayer/Control/MarginContainer"]
+[node name="ProductList" type="GridContainer" parent="CanvasLayer/Control/MarginContainer" node_paths=PackedStringArray("buy_confirm_dialog")]
 layout_mode = 2
 script = ExtResource("6_kgm72")
 item_scene = ExtResource("7_7q0nn")
+buy_confirm_dialog = NodePath("BuyConfirmDialog")
+
+[node name="BuyConfirmDialog" type="ConfirmationDialog" parent="CanvasLayer/Control/MarginContainer/ProductList"]
+title = "Purchase Confirmation"
+initial_position = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control"]
 layout_mode = 1

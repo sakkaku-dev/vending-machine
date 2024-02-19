@@ -28,7 +28,10 @@ func _ready():
 		if slot == slot_coord:
 			current_product = product
 			
-			_remove_all()
+			if latest_node:
+				latest_node.queue_free()
+				latest_node = null
+			
 			icon.texture = product.icon
 			icon.show()
 			

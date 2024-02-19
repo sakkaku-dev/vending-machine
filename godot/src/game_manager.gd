@@ -7,6 +7,8 @@ signal slot_changed(slot, product)
 signal slot_filled(slot, amount)
 signal slot_sold(slot, earned_money)
 
+signal product_bought(p)
+
 var available_products: Array[ProductResource] = [
 	preload("res://src/products/soda.tres"),
 	preload("res://src/products/sport.tres")
@@ -52,6 +54,18 @@ func _reset_slot(slot: Vector2):
 func is_unlocked(p: ProductResource):
 	return p.type in _unlocked_products
 
+func buy_product(p: ProductResource):
+	if p.type in _unlocked_products:
+		_logger.warn("Product %s is already unlocked. No need to buy it again." % [p.get_product_name()])
+		return
+	if money < p.unlock_price:
+		_logger.warn("Cannot unlock product %s. Price is %s, but only %s coins available." % [p.get_product_name(), p.unlock_price, money])
+		return
+	
+	money -= p.unlock_price
+	_unlocked_products.append(p.type)
+	product_bought.emit(p)
+
 func fill_slot(slot: Vector2):
 	var product = slot_product[slot]
 	if product == null:
@@ -76,6 +90,10 @@ func _add_to_stock(type: ProductResource.Type, amount: int):
 	stock[type] += amount
 
 func set_product_for_slot(slot: Vector2, product: ProductResource):
+	if not is_unlocked(product):
+		_logger.warn("Cannot set product %s to slot %s. It's not unlocked yet" % [product.type, slot])
+		return
+	
 	_reset_slot(slot)
 	slot_product[slot] = product
 	slot_amount[slot] = 0
