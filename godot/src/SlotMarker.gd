@@ -3,6 +3,7 @@ extends Marker2D
 
 const GROUP = "SlotMarker"
 
+@export var icon: Sprite2D
 @export var drop_position: Node2D
 @onready var color_rect = $ColorRect
 
@@ -13,6 +14,7 @@ var latest_node
 
 func _ready():
 	add_to_group(GROUP)
+	icon.hide()
 	
 	color_rect.mouse_entered.connect(func(): color_rect.z_index = 10)
 	color_rect.mouse_exited.connect(func(): color_rect.z_index = 0)
@@ -27,6 +29,9 @@ func _ready():
 			current_product = product
 			
 			_remove_all()
+			icon.texture = product.icon
+			icon.show()
+			
 			if GameManager.get_slot_amount(slot_coord) > 0:
 				latest_node = _add_scene()
 	)
@@ -54,7 +59,7 @@ func cancel():
 
 func _remove_all():
 	for c in get_children():
-		if c == color_rect: continue
+		if c == color_rect or c == icon or c == drop_position: continue
 		remove_child(c)
 
 func _add_scene():

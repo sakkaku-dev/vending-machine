@@ -8,7 +8,7 @@ func drop(final_pos_y: float):
 	
 	tw.tween_property(self, "position:y", final_pos_y, 0.5).set_ease(Tween.EASE_OUT)
 	tw.parallel().tween_property(sprite_2d, "rotation", PI/2, 0.25).set_ease(Tween.EASE_OUT)
-	tw.parallel().tween_property(sprite_2d, "scale", Vector2(0.6, 0.8), 0.5).set_ease(Tween.EASE_OUT)
+	tw.parallel().tween_property(sprite_2d, "scale", Vector2(0.8, 1), 0.5).set_ease(Tween.EASE_OUT)
 	
 	await tw.finished
 	queue_free()

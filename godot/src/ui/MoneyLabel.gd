@@ -5,4 +5,4 @@ func _ready():
 	GameManager.slot_sold.connect(func(_slot, _earned): _update())
 
 func _update():
-	text = "%s coins" % GameManager.money
+	text = "%s" % GameManager.money

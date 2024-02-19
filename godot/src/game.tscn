@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://di8g8e6s34cik"]
+[gd_scene load_steps=16 format=3 uid="uid://di8g8e6s34cik"]
 
 [ext_resource type="Script" path="res://src/game.gd" id="1_xx2in"]
 [ext_resource type="Texture2D" uid="uid://b0spngh76s3i4" path="res://assets/Table.png" id="2_mhxbb"]
@@ -6,12 +6,15 @@
 [ext_resource type="Texture2D" uid="uid://c5sxjr5lesx2d" path="res://assets/Machine_Single_Inner.png" id="4_ir211"]
 [ext_resource type="Texture2D" uid="uid://ct2xqx2texkp8" path="res://assets/Machine_Single_Outer.png" id="5_d4k2d"]
 [ext_resource type="Script" path="res://src/SlotMarker.gd" id="5_md0ey"]
+[ext_resource type="Texture2D" uid="uid://co2utna3r8sgg" path="res://assets/Icon_Soda.png" id="6_6pde2"]
 [ext_resource type="Texture2D" uid="uid://csy7ak2qeo155" path="res://assets/Machine_StockLight.png" id="6_cl77s"]
+[ext_resource type="Texture2D" uid="uid://bqv5a8l3ge3fb" path="res://assets/OutOfStock.png" id="6_jr7vi"]
 [ext_resource type="Script" path="res://src/ui/ProductList.gd" id="6_kgm72"]
 [ext_resource type="Theme" uid="uid://cbnnyf42jt1ru" path="res://theme/theme.tres" id="6_qgemu"]
 [ext_resource type="PackedScene" uid="uid://cckiu05lb7rjc" path="res://src/ui/product_icon.tscn" id="7_7q0nn"]
 [ext_resource type="Script" path="res://src/SlotAmount.gd" id="7_qeeje"]
 [ext_resource type="Script" path="res://src/ui/MoneyLabel.gd" id="8_udxw8"]
+[ext_resource type="Texture2D" uid="uid://cjjm3mxgixq8c" path="res://assets/Coin.png" id="14_24nsl"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_xx2in")
@@ -33,9 +36,18 @@ texture = ExtResource("2_mhxbb")
 [node name="Sprite2D" type="Sprite2D" parent="SingleSlotMachine"]
 texture = ExtResource("4_ir211")
 
-[node name="SlotMarker" type="Marker2D" parent="SingleSlotMachine/Sprite2D" node_paths=PackedStringArray("drop_position")]
+[node name="Icon" type="Sprite2D" parent="SingleSlotMachine/Sprite2D"]
+modulate = Color(1, 1, 1, 0.396078)
+position = Vector2(-9.5, -8)
+texture = ExtResource("6_6pde2")
+
+[node name="Sprite2D" type="Sprite2D" parent="SingleSlotMachine/Sprite2D/Icon"]
+texture = ExtResource("6_jr7vi")
+
+[node name="SlotMarker" type="Marker2D" parent="SingleSlotMachine/Sprite2D" node_paths=PackedStringArray("icon", "drop_position")]
 position = Vector2(-9.5, 7)
 script = ExtResource("5_md0ey")
+icon = NodePath("../Icon")
 drop_position = NodePath("DropPosition")
 
 [node name="ColorRect" type="ColorRect" parent="SingleSlotMachine/Sprite2D/SlotMarker"]
@@ -45,14 +57,15 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -10.0
-offset_top = -20.0
+offset_top = -25.0
 offset_right = 10.0
+offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.486275)
 
 [node name="DropPosition" type="Marker2D" parent="SingleSlotMachine/Sprite2D/SlotMarker"]
-position = Vector2(-0.5, 22)
+position = Vector2(-0.5, 21)
 
 [node name="Outer" type="Sprite2D" parent="SingleSlotMachine/Sprite2D"]
 texture = ExtResource("5_d4k2d")
@@ -63,14 +76,15 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -44.0
-offset_top = -21.0
-offset_right = -39.0
-offset_bottom = -18.0
+offset_left = -47.0
+offset_top = -23.0
+offset_right = -35.0
+offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(2.5, 1.5)
 texture_normal = ExtResource("6_cl77s")
+stretch_mode = 3
 script = ExtResource("7_qeeje")
 slot_marker = NodePath("../SlotMarker")
 
@@ -108,11 +122,29 @@ layout_mode = 2
 script = ExtResource("6_kgm72")
 item_scene = ExtResource("7_7q0nn")
 
-[node name="Label" type="Label" parent="CanvasLayer/Control"]
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
-offset_right = 1.0
-offset_bottom = 23.0
+offset_right = 54.0
+offset_bottom = 10.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/MarginContainer2"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("14_24nsl")
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="CanvasLayer/Control/MarginContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
 text = "__MONEY__"
+horizontal_alignment = 1
+vertical_alignment = 2
 script = ExtResource("8_udxw8")
 
 [connection signal="edit_for" from="CanvasLayer/Control/MarginContainer/ProductList" to="." method="_on_product_list_edit_for"]
