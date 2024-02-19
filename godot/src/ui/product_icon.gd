@@ -8,6 +8,7 @@ var product: ProductResource
 func _ready():
 	_update()
 	GameManager.stock_changed.connect(func(_p, _diff): _update())
+	GameManager.product_unlocked.connect(func(_p): _update())
 
 func _update():
 	if product and GameManager.is_unlocked(product):
