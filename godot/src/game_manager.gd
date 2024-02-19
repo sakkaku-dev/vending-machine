@@ -98,9 +98,12 @@ func fill_slot(slot: Vector2):
 	var current_amount = slot_amount[slot]
 	var fill_amount = items_per_slot - current_amount
 	
-	_add_to_stock(product.type, -fill_amount)
-	slot_amount[slot] += fill_amount
-	GameManager.slot_filled.emit(slot, fill_amount)
+	var stock_amount = stock[product.type]
+	var actual_fill = min(stock_amount, fill_amount)
+	
+	_add_to_stock(product.type, -actual_fill)
+	slot_amount[slot] += actual_fill
+	GameManager.slot_filled.emit(slot, actual_fill)
 
 func _add_to_stock(type: ProductResource.Type, amount: int):
 	if not type in stock:
