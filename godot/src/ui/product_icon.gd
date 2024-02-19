@@ -8,20 +8,20 @@ var product: ProductResource
 
 func _ready():
 	_update()
-	GameManager.slot_changed.connect(func(_s, _p): _update())
-	GameManager.slot_filled.connect(func(_s, _a): _update())
-	GameManager.product_bought.connect(func(_p): _update())
+	GameManager.stock_changed.connect(func(_p, _diff): _update())
+	GameManager.product_unlocked.connect(func(_p): _update())
 
 func _update():
 	if product and GameManager.is_unlocked(product):
 		var stock = GameManager.get_stock_for(product.type)
 		label.text = "%s" % stock
+		color_rect.visible = false
 		label.show()
 	else:
 		label.hide()
+		color_rect.visible = true
 
 func set_product(p: ProductResource):
 	product = p
 	texture_rect.texture = p.icon
-	color_rect.visible = not GameManager.is_unlocked(product)
 	_update()

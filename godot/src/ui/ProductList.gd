@@ -9,6 +9,7 @@ var confirming_product
 
 func _ready():
 	_update()
+	buy_confirm_dialog.hide()
 	
 	buy_confirm_dialog.canceled.connect(func():
 		buy_confirm_dialog.hide()
@@ -21,7 +22,8 @@ func _ready():
 
 func _update():
 	for c in get_children():
-		remove_child(c)
+		if c is Control:
+			remove_child(c)
 	
 	for p in GameManager.available_products:
 		var item = item_scene.instantiate() as TextureButton
@@ -31,7 +33,7 @@ func _update():
 				edit_for.emit(p)
 			else:
 				confirming_product = p
-				buy_confirm_dialog.dialog_text = "Buy %s for %s coins?" % [p.get_product_name(), p.unlock_price]
+				buy_confirm_dialog.dialog_text = "Buy product %s for %s coins?" % [p.get_product_name(), p.unlock_price]
 				buy_confirm_dialog.show()
 		)
 		item.set_product(p)

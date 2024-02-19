@@ -7,7 +7,9 @@ signal slot_changed(slot, product)
 signal slot_filled(slot, amount)
 signal slot_sold(slot, earned_money)
 
-signal product_bought(p)
+signal stock_changed(p, diff)
+signal money_changed(diff)
+signal product_unlocked(p)
 
 var available_products: Array[ProductResource] = [
 	preload("res://src/products/soda.tres"),
@@ -16,9 +18,13 @@ var available_products: Array[ProductResource] = [
 
 var _unlocked_products = [ProductResource.Type.SODA]
 
-var resell_increase := 1.5
 var items_per_slot := 5
-var money = 0
+var money = 0:
+	set(v):
+		var diff = v - money
+		money = v
+		money_changed.emit(diff)
+
 var stock = {
 	ProductResource.Type.SODA: 100
 }
@@ -62,9 +68,9 @@ func buy_product(p: ProductResource):
 		_logger.warn("Cannot unlock product %s. Price is %s, but only %s coins available." % [p.get_product_name(), p.unlock_price, money])
 		return
 	
-	money -= p.unlock_price
+	self.money -= p.unlock_price
 	_unlocked_products.append(p.type)
-	product_bought.emit(p)
+	product_unlocked.emit(p)
 
 func fill_slot(slot: Vector2):
 	var product = slot_product[slot]
@@ -88,6 +94,7 @@ func _add_to_stock(type: ProductResource.Type, amount: int):
 		stock[type] = 0
 	
 	stock[type] += amount
+	stock_changed.emit(type, amount)
 
 func set_product_for_slot(slot: Vector2, product: ProductResource):
 	if not is_unlocked(product):
@@ -105,8 +112,8 @@ func sold_in_slot(slot: Vector2):
 	var product = slot_product[slot]
 	slot_amount[slot] -= 1
 	
-	var earned = ceil(product.base_price * resell_increase)
-	money += earned
+	var earned = product.sell_price
+	self.money += earned
 	
 	_logger.debug("Sold %s in slot %s and earned %s coins" % [product.type, slot, earned])
 	GameManager.slot_sold.emit(slot, earned)

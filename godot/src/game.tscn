@@ -126,6 +126,8 @@ buy_confirm_dialog = NodePath("BuyConfirmDialog")
 [node name="BuyConfirmDialog" type="ConfirmationDialog" parent="CanvasLayer/Control/MarginContainer/ProductList"]
 title = "Purchase Confirmation"
 initial_position = 1
+ok_button_text = "Buy"
+dialog_text = "__TEST_TEXT_FOR_TESTING_HERE__"
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
