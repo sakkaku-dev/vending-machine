@@ -60,7 +60,7 @@ func _reset_slot(slot: Vector2):
 func is_unlocked(p: ProductResource):
 	return p.type in _unlocked_products
 
-func buy_product(p: ProductResource):
+func unlock_product(p: ProductResource):
 	if p.type in _unlocked_products:
 		_logger.warn("Product %s is already unlocked. No need to buy it again." % [p.get_product_name()])
 		return
@@ -72,12 +72,25 @@ func buy_product(p: ProductResource):
 	_unlocked_products.append(p.type)
 	product_unlocked.emit(p)
 
+func restock_product(p: ProductResource, amount: int = 1):
+	if not p.type in _unlocked_products:
+		_logger.warn("Product %s is not unlocked. Cannot restock it." % [p.get_product_name()])
+		return
+		
+	var total_price = p.base_price * amount
+	if money < total_price:
+		_logger.warn("Cannot restock product %s. Price is %s, but only %s coins available." % [p.get_product_name(), p.base_price, money])
+		return
+	
+	self.money -= total_price
+	_add_to_stock(p.type, amount)
+
 func fill_slot(slot: Vector2):
-	var product = slot_product[slot]
-	if product == null:
+	if not slot in slot_product:
 		_logger.info("Slot %s has no product assigned" % slot)
 		return
 	
+	var product = slot_product[slot]
 	if get_stock_for(product.type) <= 0:
 		_logger.info("Slot %s product %s is out of stock" % [slot, ProductResource.Type.keys()[product.type]])
 		return

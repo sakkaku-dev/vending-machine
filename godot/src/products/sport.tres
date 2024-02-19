@@ -8,6 +8,7 @@
 script = ExtResource("1_l1xmc")
 type = 1
 base_price = 5
+sell_price = 8
 unlock_price = 100
 icon = ExtResource("1_e38ji")
 scene = ExtResource("2_pwv7s")

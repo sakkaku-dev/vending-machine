@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://ba2ewooloakod"]
+
+[ext_resource type="Texture2D" uid="uid://co2utna3r8sgg" path="res://assets/Icon_Soda.png" id="1_v2eqk"]
+[ext_resource type="Texture2D" uid="uid://cis6nkmj5sv6" path="res://assets/Icon_Lock.png" id="2_g15j1"]
+[ext_resource type="Script" path="res://src/ui/icon_with_lock.gd" id="2_wnp4n"]
+
+[node name="TextureRect" type="TextureRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_v2eqk")
+expand_mode = 3
+stretch_mode = 5
+script = ExtResource("2_wnp4n")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.513726)
+
+[node name="TextureRect2" type="TextureRect" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_g15j1")
+expand_mode = 2
+stretch_mode = 5

@@ -1,6 +1,6 @@
 extends Control
 
-signal edit_for(product: ProductResource)
+signal open(product: ProductResource)
 
 @export var item_scene: PackedScene
 @export var buy_confirm_dialog: ConfirmationDialog
@@ -29,11 +29,11 @@ func _update():
 		var item = item_scene.instantiate() as TextureButton
 		add_child(item)
 		item.pressed.connect(func():
-			if GameManager.is_unlocked(p):
-				edit_for.emit(p)
-			else:
-				confirming_product = p
-				buy_confirm_dialog.dialog_text = "Buy product %s for %s coins?" % [p.get_product_name(), p.unlock_price]
-				buy_confirm_dialog.show()
+			#if GameManager.is_unlocked(p):
+			open.emit(p)
+			#else:
+				#confirming_product = p
+				#buy_confirm_dialog.dialog_text = "Buy product %s for %s coins?" % [p.get_product_name(), p.unlock_price]
+				#buy_confirm_dialog.show()
 		)
 		item.set_product(p)
