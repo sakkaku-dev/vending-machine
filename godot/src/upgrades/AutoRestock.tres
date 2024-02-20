@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="UpgradeResource" load_steps=3 format=3 uid="uid://ca6ch2xkogupi"]
+
+[ext_resource type="Texture2D" uid="uid://bwve2nq30wldn" path="res://icon.svg" id="1_cxmkb"]
+[ext_resource type="Script" path="res://src/upgrades/UpgradeResource.gd" id="1_v27rk"]
+
+[resource]
+script = ExtResource("1_v27rk")
+type = 1
+price = 400
+icon = ExtResource("1_cxmkb")

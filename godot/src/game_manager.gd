@@ -1,5 +1,10 @@
 extends Node
 
+enum Upgrades {
+	AUTO_REFILL,
+	AUTO_RESTOCK,
+}
+
 signal available_products_changed()
 signal selected_slot(slot: Vector2)
 
@@ -10,13 +15,19 @@ signal slot_sold(slot, earned_money)
 signal stock_changed(p, diff)
 signal money_changed(diff)
 signal product_unlocked(p)
+signal upgrade_unlocked(u)
 
 var available_products: Array[ProductResource] = [
 	preload("res://src/products/soda.tres"),
-	preload("res://src/products/sport.tres")
+	preload("res://src/products/sport.tres"),
+]
+var available_upgrades: Array[UpgradeResource] = [
+	preload("res://src/upgrades/AutoRefill.tres"),
+	preload("res://src/upgrades/AutoRestock.tres"),
 ]
 
-var _unlocked_products = [ProductResource.Type.SODA]
+var _unlocked_products: Array[ProductResource.Type]= [ProductResource.Type.SODA]
+var _unlocked_upgrades: Array[Upgrades] = []
 
 var items_per_slot := 5
 var money = 0:
@@ -57,8 +68,25 @@ func _reset_slot(slot: Vector2):
 	
 	slot_product[slot] = null
 
-func is_unlocked(p: ProductResource):
-	return p.type in _unlocked_products
+func is_unlocked(i):
+	if i is UpgradeResource:
+		return i.type in _unlocked_upgrades
+	elif i is ProductResource:
+		return i.type in _unlocked_products
+	return false
+
+func unlock_upgrade(u: UpgradeResource):
+	if u.type in _unlocked_upgrades:
+		_logger.warn("Upgrade %s is already unlocked. No need to buy it again." % [u.get_upgrade_name()])
+		return
+	if money < u.price:
+		_logger.warn("Cannot unlock upgrade %s. Price is %s, but only %s coins available." % [u.get_upgrade_name(), u.price, money])
+		return
+		
+	self.money -= u.price
+	_unlocked_upgrades.append(u.type)
+	upgrade_unlocked.emit(u)
+	
 
 func unlock_product(p: ProductResource):
 	if p.type in _unlocked_products:

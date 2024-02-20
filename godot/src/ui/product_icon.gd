@@ -20,5 +20,5 @@ func _update():
 
 func set_product(p: ProductResource):
 	product = p
-	texture_rect.set_product(p)
+	texture_rect.set_item(p)
 	_update()

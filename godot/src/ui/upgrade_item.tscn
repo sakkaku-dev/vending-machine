@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfeghagg4ftsw"]
+
+[ext_resource type="Script" path="res://src/ui/upgrade_item.gd" id="1_dgxg5"]
+[ext_resource type="PackedScene" uid="uid://ba2ewooloakod" path="res://src/ui/icon_with_lock.tscn" id="2_exlo7"]
+
+[node name="TextureButton" type="TextureButton" node_paths=PackedStringArray("texture_rect", "title", "desc", "overlay")]
+custom_minimum_size = Vector2(100, 30)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dgxg5")
+texture_rect = NodePath("UpgradeItem/TextureRect")
+title = NodePath("UpgradeItem/VBoxContainer/Title")
+desc = NodePath("UpgradeItem/VBoxContainer/Desc")
+overlay = NodePath("ColorRect")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.52549)
+
+[node name="UpgradeItem" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" parent="UpgradeItem" instance=ExtResource("2_exlo7")]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UpgradeItem"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="UpgradeItem/VBoxContainer"]
+layout_mode = 2
+
+[node name="Desc" type="Label" parent="UpgradeItem/VBoxContainer"]
+layout_mode = 2

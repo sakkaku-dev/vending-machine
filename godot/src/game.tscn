@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://di8g8e6s34cik"]
+[gd_scene load_steps=22 format=3 uid="uid://di8g8e6s34cik"]
 
 [ext_resource type="Script" path="res://src/game.gd" id="1_xx2in"]
 [ext_resource type="Texture2D" uid="uid://b0spngh76s3i4" path="res://assets/Table.png" id="2_mhxbb"]
@@ -15,9 +15,12 @@
 [ext_resource type="Script" path="res://src/SlotAmount.gd" id="7_qeeje"]
 [ext_resource type="Script" path="res://src/ui/MoneyLabel.gd" id="8_udxw8"]
 [ext_resource type="Texture2D" uid="uid://cjjm3mxgixq8c" path="res://assets/Coin.png" id="14_24nsl"]
+[ext_resource type="Texture2D" uid="uid://cis6nkmj5sv6" path="res://assets/Icon_Lock.png" id="14_xsmgg"]
 [ext_resource type="Script" path="res://src/ui/ProductPanel.gd" id="16_rhp13"]
 [ext_resource type="Texture2D" uid="uid://bwve2nq30wldn" path="res://icon.svg" id="17_1gc7o"]
 [ext_resource type="PackedScene" uid="uid://ba2ewooloakod" path="res://src/ui/icon_with_lock.tscn" id="17_r0fn2"]
+[ext_resource type="Script" path="res://src/ui/UpgradePanel.gd" id="20_7j66k"]
+[ext_resource type="PackedScene" uid="uid://dfeghagg4ftsw" path="res://src/ui/upgrade_item.tscn" id="21_pgdvx"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_xx2in")
@@ -120,17 +123,31 @@ anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="ProductList" type="GridContainer" parent="CanvasLayer/Control/MarginContainer" node_paths=PackedStringArray("buy_confirm_dialog")]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/MarginContainer"]
+layout_mode = 2
+
+[node name="ProductList" type="GridContainer" parent="CanvasLayer/Control/MarginContainer/VBoxContainer" node_paths=PackedStringArray("buy_confirm_dialog")]
 layout_mode = 2
 script = ExtResource("6_kgm72")
 item_scene = ExtResource("7_7q0nn")
 buy_confirm_dialog = NodePath("BuyConfirmDialog")
 
-[node name="BuyConfirmDialog" type="ConfirmationDialog" parent="CanvasLayer/Control/MarginContainer/ProductList"]
+[node name="BuyConfirmDialog" type="ConfirmationDialog" parent="CanvasLayer/Control/MarginContainer/VBoxContainer/ProductList"]
 title = "Purchase Confirmation"
 initial_position = 1
 ok_button_text = "Buy"
 dialog_text = "__TEST_TEXT_FOR_TESTING_HERE__"
+
+[node name="Control" type="Control" parent="CanvasLayer/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ViewUpgrade" type="TextureButton" parent="CanvasLayer/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+texture_normal = ExtResource("14_xsmgg")
+stretch_mode = 5
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control"]
 layout_mode = 1
@@ -157,7 +174,7 @@ horizontal_alignment = 1
 vertical_alignment = 2
 script = ExtResource("8_udxw8")
 
-[node name="ProductPanel" type="Control" parent="CanvasLayer/Control" node_paths=PackedStringArray("overlay", "container", "unlock_btn", "restock_btn", "restock_batch_btn", "place_btn", "close_btn", "buy_price", "sell_price", "unlock_price", "icon")]
+[node name="ProductPanel" type="Control" parent="CanvasLayer/Control" node_paths=PackedStringArray("unlock_btn", "restock_btn", "restock_batch_btn", "place_btn", "buy_price", "sell_price", "unlock_price", "icon", "overlay", "container", "close_btn")]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -165,17 +182,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("16_rhp13")
-overlay = NodePath("ColorRect")
-container = NodePath("CenterContainer")
 unlock_btn = NodePath("CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/Unlock")
 restock_btn = NodePath("CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/Restock")
 restock_batch_btn = NodePath("CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/RestockBatch")
 place_btn = NodePath("CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer2/Place")
-close_btn = NodePath("CenterContainer/PanelContainer/MarginContainer2/CloseButton")
 buy_price = NodePath("CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/GridContainer/BuyPrice")
 sell_price = NodePath("CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/GridContainer/SellPrice")
 unlock_price = NodePath("CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/GridContainer/UnlockPrice")
 icon = NodePath("CenterContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/TextureRect2")
+overlay = NodePath("ColorRect")
+container = NodePath("CenterContainer")
+close_btn = NodePath("CenterContainer/PanelContainer/MarginContainer2/CloseButton")
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/ProductPanel"]
 layout_mode = 1
@@ -293,4 +310,73 @@ texture = ExtResource("17_1gc7o")
 expand_mode = 2
 stretch_mode = 5
 
-[connection signal="open" from="CanvasLayer/Control/MarginContainer/ProductList" to="CanvasLayer/Control/ProductPanel" method="open_for"]
+[node name="UpgradePanel" type="Control" parent="CanvasLayer/Control" node_paths=PackedStringArray("list_container", "overlay", "container", "close_btn")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("20_7j66k")
+list_container = NodePath("CenterContainer/PanelContainer/MarginContainer/VBoxContainer")
+list_item_scene = ExtResource("21_pgdvx")
+overlay = NodePath("ColorRect")
+container = NodePath("CenterContainer")
+close_btn = NodePath("CenterContainer/PanelContainer/MarginContainer2/CloseButton")
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/Control/UpgradePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.478431)
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control/UpgradePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Control/UpgradePanel/CenterContainer"]
+custom_minimum_size = Vector2(200, 150)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/UpgradePanel/CenterContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/UpgradePanel/CenterContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/Control/UpgradePanel/CenterContainer/PanelContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+theme_override_constants/margin_top = -5
+theme_override_constants/margin_right = -5
+
+[node name="CloseButton" type="TextureButton" parent="CanvasLayer/Control/UpgradePanel/CenterContainer/PanelContainer/MarginContainer2"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Control/UpgradePanel/CenterContainer/PanelContainer/MarginContainer2/CloseButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("17_1gc7o")
+expand_mode = 2
+stretch_mode = 5
+
+[connection signal="open" from="CanvasLayer/Control/MarginContainer/VBoxContainer/ProductList" to="CanvasLayer/Control/ProductPanel" method="open_for"]
+[connection signal="pressed" from="CanvasLayer/Control/MarginContainer/VBoxContainer/ViewUpgrade" to="CanvasLayer/Control/UpgradePanel" method="show_panel"]
