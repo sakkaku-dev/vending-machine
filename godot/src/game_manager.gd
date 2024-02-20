@@ -86,7 +86,8 @@ func unlock_upgrade(u: UpgradeResource):
 	self.money -= u.price
 	_unlocked_upgrades.append(u.type)
 	upgrade_unlocked.emit(u)
-	
+	_check_auto_refill()
+	_check_auto_restock()
 
 func unlock_product(p: ProductResource):
 	if p.type in _unlocked_products:
@@ -104,14 +105,35 @@ func restock_product(p: ProductResource, amount: int = 1):
 	if not p.type in _unlocked_products:
 		_logger.warn("Product %s is not unlocked. Cannot restock it." % [p.get_product_name()])
 		return
-		
-	var total_price = p.base_price * amount
-	if money < total_price:
-		_logger.warn("Cannot restock product %s. Price is %s, but only %s coins available." % [p.get_product_name(), p.base_price, money])
-		return
 	
-	self.money -= total_price
-	_add_to_stock(p.type, amount)
+	for i in range(amount):
+		if money < p.base_price:
+			_logger.warn("Cannot restock product %s. Price is %s, but only %s coins available." % [p.get_product_name(), p.base_price, money])
+			return
+	
+		self.money -= p.base_price
+		_add_to_stock(p.type, 1)
+	_check_auto_refill()
+
+func _check_auto_refill():
+	if _is_auto_refill_unlocked():
+		for slot in slot_product:
+			fill_slot(slot)
+			
+func _check_auto_restock():
+	if _is_auto_restock_unlocked():
+		for slot in slot_product:
+			var p = slot_product[slot]
+			if _is_out_of_stock(p):
+				restock_product(p, items_per_slot)
+
+func _is_out_of_stock(p: ProductResource):
+	return get_stock_for(p.type) <= 0
+
+func _is_auto_refill_unlocked():
+	return UpgradeResource.Type.AUTO_REFILL in _unlocked_upgrades
+func _is_auto_restock_unlocked():
+	return UpgradeResource.Type.AUTO_RESTOCK in _unlocked_upgrades
 
 func fill_slot(slot: Vector2):
 	if not slot in slot_product:
@@ -119,7 +141,7 @@ func fill_slot(slot: Vector2):
 		return
 	
 	var product = slot_product[slot]
-	if get_stock_for(product.type) <= 0:
+	if _is_out_of_stock(product):
 		_logger.info("Slot %s product %s is out of stock" % [slot, ProductResource.Type.keys()[product.type]])
 		return
 
@@ -132,6 +154,7 @@ func fill_slot(slot: Vector2):
 	_add_to_stock(product.type, -actual_fill)
 	slot_amount[slot] += actual_fill
 	GameManager.slot_filled.emit(slot, actual_fill)
+	_check_auto_restock()
 
 func _add_to_stock(type: ProductResource.Type, amount: int):
 	if not type in stock:
@@ -151,6 +174,7 @@ func set_product_for_slot(slot: Vector2, product: ProductResource):
 	GameManager.slot_changed.emit(slot, product)
 	
 	fill_slot(slot)
+	_check_auto_restock()
 
 func sold_in_slot(slot: Vector2):
 	var product = slot_product[slot]
@@ -161,6 +185,7 @@ func sold_in_slot(slot: Vector2):
 	
 	_logger.debug("Sold %s in slot %s and earned %s coins" % [product.type, slot, earned])
 	GameManager.slot_sold.emit(slot, earned)
+	_check_auto_refill()
 
 func get_slots_with_available_products():
 	var result = []
